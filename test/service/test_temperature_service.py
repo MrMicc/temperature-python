@@ -1,7 +1,7 @@
 
 import pytest
-from src.service.temperature_service import TemperatureService
-from src.model.sensor import SensorInterface
+from service.temperature_service import TemperatureService
+from model.sensor import SensorInterface
 
 
 class SensorMock(SensorInterface):

@@ -1,6 +1,6 @@
-from src.control.temperature_controller import TemperatureController
-from src.model.sensor import Sensor, SensorInterface
-from src.service.temperature_service import TemperatureService
+from control.temperature_controller import TemperatureController
+from model.sensor import Sensor, SensorInterface
+from service.temperature_service import TemperatureService
 from pyfirmata import Arduino, util
 import random
 import time

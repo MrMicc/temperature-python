@@ -1,6 +1,6 @@
-from src.model.sensor import SensorInterface
-from src.model.alerts import TemperatureAlert
-from src.model.temperature import Temperature
+from model.sensor import SensorInterface
+from model.alerts import TemperatureAlert
+from model.temperature import Temperature
 
 
 class TemperatureService():

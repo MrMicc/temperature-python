@@ -1,5 +1,5 @@
 import pytest
-from src.model.temperature import Temperature
+from model.temperature import Temperature
 
 
 class TestTemperature():

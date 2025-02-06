@@ -3,7 +3,7 @@
 import pytest
 from unittest.mock import MagicMock
 from pyfirmata import Arduino
-from src.control.temperature_controller import TemperatureController
+from control.temperature_controller import TemperatureController
 
 
 @pytest.fixture

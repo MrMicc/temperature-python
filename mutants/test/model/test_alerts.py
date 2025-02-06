@@ -1,6 +1,6 @@
 import pytest
-from src.model.temperature import Temperature
-from src.model.alerts import TemperatureAlert
+from model.temperature import Temperature
+from model.alerts import TemperatureAlert
 
 
 class TestAlerts():
