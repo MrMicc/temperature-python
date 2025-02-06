@@ -1,3 +1,4 @@
+from model.enum_alerts import EnumAlerts
 from model.temperature import Temperature
 
 
@@ -9,8 +10,8 @@ class TemperatureAlert():
 
     def check(self, temperature: Temperature) -> str:
         if temperature.value > self.high_threshold:
-            return "High temperature"
+            return EnumAlerts.HIGH.value
         if temperature.value < self.low_threshold:
-            return "Low temperature"
+            return EnumAlerts.LOW.value
 
-        return "Normal temperature"
+        return EnumAlerts.NORMAL.value
