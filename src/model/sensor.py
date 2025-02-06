@@ -20,9 +20,9 @@ class Sensor(SensorInterface):
 
     def __get_value_from_sensor_pin(self):
         voltage = self.sensor_pin.read()
-        if voltage is None:
-            return 0
-        return voltage
+        if voltage:
+            return voltage
+        return 0
 
     def __setup_sensor_pin(self):
         self.sensor_pin = self.board.analog[0]

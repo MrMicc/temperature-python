@@ -23,3 +23,12 @@ class TestAlerts():
             low_threshold=low_threshold, high_threshold=high_threshold)
         temp = Temperature(value)
         assert alert.check(temp) == "Normal temperature"
+
+    @pytest.mark.parametrize("temperature, high_threshold, low_threshold, alert",
+                             [(25, 25, 20, "Normal temperature"),
+                              (20, 25, 20, "Normal temperature")])
+    def test_check_temperature(self, temperature, high_threshold, low_threshold, alert):
+        tempAlert = TemperatureAlert(
+            high_threshold=high_threshold, low_threshold=low_threshold)
+        result = tempAlert.check(Temperature(temperature))
+        assert result == alert

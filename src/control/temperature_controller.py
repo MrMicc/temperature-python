@@ -10,11 +10,11 @@ class TemperatureController():
         self.yellow_led = self.board.get_pin('d:10:o')
 
     def control_leds(self, alert_type):
-        if alert_type == "High temperature":
+        if alert_type in "High temperature":
             self.__turn_red_on()
-        if alert_type == "Low temperature":
+        if alert_type in "Low temperature":
             self.__turn_yellow_on()
-        if alert_type == "Normal temperature":
+        if alert_type in "Normal temperature":
             self.__turn_green_on()
 
     def __turn_red_on(self):

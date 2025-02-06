@@ -1,7 +1,7 @@
+import pytest
 from unittest.mock import MagicMock
 from pyfirmata import Arduino
 from model.sensor import Sensor
-import pytest
 
 
 @pytest.fixture
@@ -36,4 +36,22 @@ def test_none_analog_value(mock_board_with_no_pin):
 
     result = sensor.get_temperature()
 
+    assert result == 0
+
+
+def test_get_value_from_sensor_pin_invalid_value(mock_board_with_no_pin):
+    sensor = Sensor(mock_board_with_no_pin)
+    result = sensor._Sensor__get_value_from_sensor_pin()
+    assert result == 0
+
+
+def test_get_value_from_sensor_pin_valid_value(mock_board):
+    sensor = Sensor(mock_board)
+    result = sensor._Sensor__get_value_from_sensor_pin()
+    assert result == 0.4897
+
+
+def test_kelvin_to_celsius(mock_board):
+    sensor = Sensor(mock_board)
+    result = sensor._Sensor__transform_kelvin_to_celsius(273.15)
     assert result == 0

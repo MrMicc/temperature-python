@@ -4,7 +4,7 @@ from model.temperature import Temperature
 
 class TestTemperature():
 
-    @pytest.mark.parametrize("temperature", [25.5])
+    @pytest.mark.parametrize("temperature", [25.5, 45, -10])
     def test_create_temperature(self, temperature):
         result = Temperature(temperature)
         expected = temperature
