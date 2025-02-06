@@ -53,5 +53,7 @@ def test_get_value_from_sensor_pin_valid_value(mock_board):
 
 def test_kelvin_to_celsius(mock_board):
     sensor = Sensor(mock_board)
-    result = sensor._Sensor__transform_kelvin_to_celsius(273.15)
-    assert result == 0
+    kelvin_temp = 300
+    expected_celsius = round(kelvin_temp - 273.15, 2)
+    result = sensor._Sensor__transform_kelvin_to_celsius(kelvin_temp)
+    assert result == expected_celsius
