@@ -1,26 +1,26 @@
-import pytest
 from unittest.mock import MagicMock
+import pytest
 from pyfirmata import Arduino
 from model.sensor import Sensor
 
 
 @pytest.fixture
 def mock_board():
-    mock_board = MagicMock(spec=Arduino)
+    mock = MagicMock(spec=Arduino)
     mock_pin = MagicMock()
-    mock_board.analog = [mock_pin]
+    mock.analog = [mock_pin]
 
     mock_pin.read.return_value = 0.4897  # 21.0
-    return mock_board
+    return mock
 
 
 @pytest.fixture
 def mock_board_with_no_pin():
-    mock_board = MagicMock(spec=Arduino)
+    mock = MagicMock(spec=Arduino)
     mock_pin = MagicMock()
-    mock_board.analog = [mock_pin]
+    mock.analog = [mock_pin]
     mock_pin.read.return_value = None
-    return mock_board
+    return mock
 
 
 def test_get_temperature(mock_board):

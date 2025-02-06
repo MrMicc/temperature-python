@@ -1,18 +1,17 @@
 
 
-import pytest
 from unittest.mock import MagicMock
+import pytest
 from pyfirmata import Arduino
 from control.temperature_controller import TemperatureController
 
 
 @pytest.fixture
 def mock_board(mock_leds):
-    mock_board = MagicMock(spec=Arduino)
-
-    mock_board.get_pin = MagicMock(
+    mock = MagicMock(spec=Arduino)
+    mock.get_pin = MagicMock(
         side_effect=lambda pin: mock_leds.get(pin, MagicMock()))
-    return mock_board
+    return mock
 
 
 @pytest.fixture

@@ -28,7 +28,7 @@ class TestAlerts():
                              [(25, 25, 20, "Normal temperature"),
                               (20, 25, 20, "Normal temperature")])
     def test_check_temperature(self, temperature, high_threshold, low_threshold, alert):
-        tempAlert = TemperatureAlert(
+        temp_alert = TemperatureAlert(
             high_threshold=high_threshold, low_threshold=low_threshold)
-        result = tempAlert.check(Temperature(temperature))
+        result = temp_alert.check(Temperature(temperature))
         assert result == alert
