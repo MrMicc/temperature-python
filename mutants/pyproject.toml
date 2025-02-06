@@ -1,0 +1,13 @@
+[tool.pytest.ini_options]
+testpaths = ["test"]
+pythonpath = ".venv/bin"
+
+[tool.mypy]
+mypy_path = "src"
+ignore_missing_imports = true
+
+[tool.mutmut]
+paths_to_mutate="src"
+tests_dir= "test"
+debug= true
+
