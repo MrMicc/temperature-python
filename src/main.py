@@ -1,9 +1,10 @@
+import time
+import random
+from pyfirmata import Arduino, util
 from control.temperature_controller import TemperatureController
 from model.sensor import Sensor, SensorInterface
 from service.temperature_service import TemperatureService
-from pyfirmata import Arduino, util
-import random
-import time
+from zoneinfo import ZoneInfo
 
 
 class SensorMock(SensorInterface):
@@ -12,10 +13,12 @@ class SensorMock(SensorInterface):
 
 
 def run_temperature_monitor():
-    board = Arduino('/dev/tty.usbmodem11101')
+    board = Arduino('/dev/tty.usbmodem1101')
     it = util.Iterator(board)
     it.start()
 
+    time_zone = ZoneInfo('America/Sao_Paulo')
+    time_format = '%Y-%m-%d %H:%M:%S'
     temp_controller = TemperatureController(board)
 
     time.sleep(2)
@@ -26,7 +29,7 @@ def run_temperature_monitor():
 
         result = process.process_temperature()
         print(
-            f"{time.strftime('%Y-%m-%d %H:%M:%S')} ## Temperature: {result['temperature']}C, Alert: {result['alert']}")
+            f"{result['timestamp'].astimezone(time_zone).strftime(time_format)} ## Temperature: {result['temperature']}C, Alert: {result['alert']}")
         temp_controller.control_leds(result['alert'])
         time.sleep(3)
 
