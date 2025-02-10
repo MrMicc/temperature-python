@@ -28,3 +28,8 @@ class TestTemperature():
         result_time = result.timestamp
         expected_time = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M")
         assert result_time.strftime("%Y-%m-%d %H:%M") == expected_time
+
+    def test_time_created_id_attribute(self):
+        result = Temperature(25.5)
+        expected_id = datetime.now(timezone.utc).strftime("%Y%m%d%H%M%S")
+        assert result.id == expected_id

@@ -3,6 +3,7 @@ import random
 from pyfirmata import Arduino, util
 from control.temperature_controller import TemperatureController
 from model.sensor import Sensor, SensorInterface
+from persistence.temperature_repository import SqliteTemperatureRepository, TemperatureRepository
 from service.temperature_service import TemperatureService
 from zoneinfo import ZoneInfo
 
@@ -14,6 +15,7 @@ class SensorMock(SensorInterface):
 
 def run_temperature_monitor():
     board = Arduino('/dev/tty.usbmodem1101')
+    repository = SqliteTemperatureRepository("temperature.db")
     it = util.Iterator(board)
     it.start()
 
@@ -28,8 +30,9 @@ def run_temperature_monitor():
     while True:
 
         result = process.process_temperature()
+        repository.save(result['temperature'])
         print(
-            f"{result['timestamp'].astimezone(time_zone).strftime(time_format)} ## Temperature: {result['temperature']}C, Alert: {result['alert']}")
+            f"{result['temperature'].timestamp.astimezone(time_zone).strftime(time_format)} ## Temperature: {result['temperature'].value}C, Alert: {result['alert']}")
         temp_controller.control_leds(result['alert'])
         time.sleep(3)
 

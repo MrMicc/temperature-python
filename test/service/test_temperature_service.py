@@ -23,9 +23,9 @@ class TestTemperatureService():
 
         expected = {"temperature": value.get_temperature(),
                     "alert": "High temperature", "timestamp": datetime.now(timezone.utc)}
-        assert result["temperature"] == expected["temperature"]
+        assert result["temperature"].value == expected["temperature"]
         assert result["alert"] == expected["alert"]
-        assert result["timestamp"].strftime(
+        assert result["temperature"].timestamp.strftime(
             "%Y-%m-%d %H:%M") == expected["timestamp"].strftime("%Y-%m-%d %H:%M")
 
     @pytest.mark.parametrize("low_threshold, high_threshold, value", [(20, 30, SensorMock(19)), (10, 20, SensorMock(9.9))])
@@ -35,9 +35,9 @@ class TestTemperatureService():
         result = service.process_temperature()
         expected = {"temperature": value.get_temperature(),
                     "alert": "Low temperature", "timestamp": datetime.now(timezone.utc)}
-        assert result["temperature"] == expected["temperature"]
+        assert result["temperature"].value == expected["temperature"]
         assert result["alert"] == expected["alert"]
-        assert result["timestamp"].strftime(
+        assert result["temperature"].timestamp.strftime(
             "%Y-%m-%d %H:%M") == expected["timestamp"].strftime("%Y-%m-%d %H:%M")
 
     @pytest.mark.parametrize("low_threshold, high_threshold, value", [(20, 30, SensorMock(25)), (10, 20, SensorMock(15))])
@@ -47,7 +47,7 @@ class TestTemperatureService():
         result = service.process_temperature()
         expected = {"temperature": value.get_temperature(),
                     "alert": "Normal temperature", "timestamp": datetime.now(timezone.utc)}
-        assert result["temperature"] == expected["temperature"]
+        assert result["temperature"].value == expected["temperature"]
         assert result["alert"] == expected["alert"]
-        assert result["timestamp"].strftime(
+        assert result["temperature"].timestamp.strftime(
             "%Y-%m-%d %H:%M") == expected["timestamp"].strftime("%Y-%m-%d %H:%M")

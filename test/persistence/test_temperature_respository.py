@@ -13,9 +13,7 @@ class TestTemperatureRepository():
     @pytest.fixture
     def db_connection(self, tmp_path):
         db_path = tmp_path / "test_temperature.db"
-        connection = sqlite3.connect(db_path)
-        yield connection
-        connection.close()
+        return db_path
 
     @pytest.mark.parametrize("expected_value", [25.5, 45, -10])
     def test_save_temperature(self, db_connection, expected_value):
@@ -24,13 +22,16 @@ class TestTemperatureRepository():
 
         temperature_repository.save(temperature)
 
-        cursor = db_connection.cursor()
-        cursor.execute("SELECT value, timestamp FROM temperature")
+        sqlite_connection = sqlite3.connect(db_connection)
+        cursor = sqlite_connection.cursor()
+        cursor.execute("SELECT id, value, timestamp FROM temperature")
         result = cursor.fetchone()
 
-        assert result[0] == temperature.value
-        assert isinstance(result[1], str)
-        assert isinstance(datetime.fromisoformat(result[1]), datetime)
+        expected_id = temperature.timestamp.strftime("%Y%m%d%H%M%S")
+        assert result[0] == expected_id
+        assert result[1] == temperature.value
+        assert isinstance(result[2], str)
+        assert isinstance(datetime.fromisoformat(result[2]), datetime)
 
     def test_get_last_temperature(self, db_connection):
         temperature_repository = SqliteTemperatureRepository(db_connection)
