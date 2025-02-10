@@ -2,9 +2,9 @@ from datetime import datetime, timezone
 
 
 class Temperature():
-    def __init__(self, value: float):
+    def __init__(self, value: float, timestamp: datetime = datetime.now(timezone.utc)):
         self.value = self._check_valid_temperature(value)
-        self.timestamp = datetime.now(timezone.utc)
+        self.timestamp = timestamp
 
     def _check_valid_temperature(self, value: float) -> float:
         if value > 45:
