@@ -1,5 +1,6 @@
 import pytest
-from datetime import datetime, timezone
+from datetime import datetime,  timezone
+import time
 from model.temperature import Temperature
 
 
@@ -33,3 +34,9 @@ class TestTemperature():
         result = Temperature(25.5)
         expected_id = datetime.now(timezone.utc).strftime("%Y%m%d%H%M%S")
         assert result.id == expected_id
+
+    def test_timestamp_changes_on_new_instace(self):
+        temp1 = Temperature(25.5)
+        time.sleep(1)
+        temp2 = Temperature(25.5)
+        assert temp1.timestamp < temp2.timestamp
