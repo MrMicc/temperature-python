@@ -3,7 +3,7 @@ import random
 from pyfirmata import Arduino, util
 from control.temperature_led_controller import TemperatureLedController
 from model.sensor import Sensor, SensorInterface
-from persistence.temperature_repository import SqliteTemperatureRepository, TemperatureRepository
+from persistence.temperature_repository import SqliteTemperatureRepository
 from service.temperature_service import TemperatureService
 from zoneinfo import ZoneInfo
 
