@@ -16,4 +16,4 @@ class TemperatureService():
         temperature = Temperature(temperature_value)
         result = self.alert.check(temperature)
 
-        return {"temperature": temperature.value, "alert": result, "timestamp": temperature.timestamp}
+        return {"temperature": temperature, "alert": result}

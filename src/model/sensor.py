@@ -55,7 +55,7 @@ class Sensor(SensorInterface):
         pullup = self.__calculate_circuit_resistance(voltage)
         return pullup
 
-    def __calculate_circuit_resistance(self, voltage, resistor=11000, vcc=5):
+    def __calculate_circuit_resistance(self, voltage, resistor=12000, vcc=5):
         resistance = resistor * ((vcc / voltage) - 1)
         return resistance
 
