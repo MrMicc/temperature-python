@@ -10,7 +10,7 @@ def mock_board():
     mock_pin = MagicMock()
     mock.analog = [mock_pin]
 
-    mock_pin.read.return_value = 0.4897  # 21.0
+    mock_pin.read.return_value = 0.5006  # 21.0
     return mock
 
 
@@ -48,7 +48,7 @@ def test_get_value_from_sensor_pin_invalid_value(mock_board_with_no_pin):
 def test_get_value_from_sensor_pin_valid_value(mock_board):
     sensor = Sensor(mock_board)
     result = sensor._Sensor__get_value_from_sensor_pin()
-    assert result == 0.4897
+    assert result == 0.5006
 
 
 @pytest.mark.parametrize("kelvin_temp, expected_celsius", [

@@ -3,7 +3,7 @@
 from unittest.mock import MagicMock
 import pytest
 from pyfirmata import Arduino
-from control.temperature_controller import TemperatureController
+from control.temperature_led_controller import TemperatureLedController
 from model.enum_alerts import EnumAlerts
 
 
@@ -23,7 +23,7 @@ def mock_leds():
 
 
 def test_leds_with_high_temperature(mock_board, mock_leds):
-    controller = TemperatureController(mock_board)
+    controller = TemperatureLedController(mock_board)
     controller.control_leds(EnumAlerts.HIGH.value)
 
     mock_leds["d:8:o"].write.assert_called_once_with(1)
@@ -32,7 +32,7 @@ def test_leds_with_high_temperature(mock_board, mock_leds):
 
 
 def test_leds_with_low_temperature(mock_board, mock_leds):
-    controller = TemperatureController(mock_board)
+    controller = TemperatureLedController(mock_board)
     controller.control_leds(EnumAlerts.LOW.value)
 
     mock_leds["d:8:o"].write.assert_called_once_with(0)
@@ -41,7 +41,7 @@ def test_leds_with_low_temperature(mock_board, mock_leds):
 
 
 def test_leds_with_normal_temperature(mock_board, mock_leds):
-    controller = TemperatureController(mock_board)
+    controller = TemperatureLedController(mock_board)
     controller.control_leds(EnumAlerts.NORMAL.value)
 
     mock_leds["d:8:o"].write.assert_called_once_with(0)

@@ -2,7 +2,7 @@ from pyfirmata import Arduino
 from model.enum_alerts import EnumAlerts
 
 
-class TemperatureController():
+class TemperatureLedController():
 
     def __init__(self, board: Arduino):
         self.board = board

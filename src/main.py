@@ -1,7 +1,7 @@
 import time
 import random
 from pyfirmata import Arduino, util
-from control.temperature_controller import TemperatureController
+from control.temperature_led_controller import TemperatureLedController
 from model.sensor import Sensor, SensorInterface
 from persistence.temperature_repository import SqliteTemperatureRepository, TemperatureRepository
 from service.temperature_service import TemperatureService
@@ -21,7 +21,7 @@ def run_temperature_monitor():
 
     time_zone = ZoneInfo('America/Sao_Paulo')
     time_format = '%Y-%m-%d %H:%M:%S'
-    temp_controller = TemperatureController(board)
+    temp_controller = TemperatureLedController(board)
 
     time.sleep(2)
     temperature_sensor = Sensor(board)
