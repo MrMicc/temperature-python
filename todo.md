@@ -8,9 +8,9 @@
 - - [x] retornar temperatura 
 - - [x] criar intervalo válido de temperatura
 - - [x] integrar sensor
-- [ ] persistir dados
-- - [ ] definir base
-- - [ ] salvar dados do sensor na base
+- [x] persistir dados
+- - [x] definir base
+- - [x] salvar dados do sensor na base
 - [ ] criar notificação de alerta
 - [ ] enviar notificação de alerta frio ou calor
 - [ ] criar servidor
