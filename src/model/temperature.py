@@ -3,10 +3,10 @@ from typing import Optional
 
 
 class Temperature():
-    def __init__(self, value: float, timestamp: Optional[datetime] = None):
+    def __init__(self, value: float, timestamp: Optional[datetime] = None, id: Optional[str] = None):
         self.value = self._check_valid_temperature(value)
         self.timestamp = timestamp or datetime.now(timezone.utc)
-        self.id = self._generate_id_maks(self.timestamp)
+        self.id = id or self._generate_id_maks(self.timestamp)
 
     def _generate_id_maks(self, timestamp):
         time = self._convert_to_timestamp(timestamp)
