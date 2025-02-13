@@ -3,6 +3,7 @@ import pytest
 from service.temperature_service import TemperatureService
 from model.sensor import SensorInterface
 from datetime import datetime, timezone
+from persistence.temperature_repository import SqliteTemperatureRepository
 
 
 class SensorMock(SensorInterface):
@@ -14,11 +15,16 @@ class SensorMock(SensorInterface):
 
 
 class TestTemperatureService():
+    @pytest.fixture
+    def db_connection(self, tmp_path):
+        db_path = tmp_path / "test_temperature.db"
+        repository = SqliteTemperatureRepository(db_path)
+        return repository
 
     @pytest.mark.parametrize("low_threshold, high_threshold, value", [(20, 30, SensorMock(30.1)), (10, 20, SensorMock(22))])
-    def test_temperature_service_with_high_alert(self, low_threshold, high_threshold, value):
+    def test_temperature_service_with_high_alert(self, db_connection, low_threshold, high_threshold, value):
         service = TemperatureService(
-            low_threshold=low_threshold, high_threshold=high_threshold, sensor=value)
+            low_threshold=low_threshold, high_threshold=high_threshold, sensor=value, repository=db_connection)
         result = service.process_temperature()
 
         expected = {"temperature": value.get_temperature(),
@@ -29,9 +35,9 @@ class TestTemperatureService():
             "%Y-%m-%d %H:%M") == expected["timestamp"].strftime("%Y-%m-%d %H:%M")
 
     @pytest.mark.parametrize("low_threshold, high_threshold, value", [(20, 30, SensorMock(19)), (10, 20, SensorMock(9.9))])
-    def test_temperature_service_with_low_alert(self, low_threshold, high_threshold, value):
+    def test_temperature_service_with_low_alert(self, db_connection, low_threshold, high_threshold, value):
         service = TemperatureService(
-            low_threshold=low_threshold, high_threshold=high_threshold, sensor=value)
+            low_threshold=low_threshold, high_threshold=high_threshold, sensor=value, repository=db_connection)
         result = service.process_temperature()
         expected = {"temperature": value.get_temperature(),
                     "alert": "Low temperature", "timestamp": datetime.now(timezone.utc)}
@@ -41,9 +47,9 @@ class TestTemperatureService():
             "%Y-%m-%d %H:%M") == expected["timestamp"].strftime("%Y-%m-%d %H:%M")
 
     @pytest.mark.parametrize("low_threshold, high_threshold, value", [(20, 30, SensorMock(25)), (10, 20, SensorMock(15))])
-    def test_temperature_service_with_normal_alert(self, low_threshold, high_threshold, value):
+    def test_temperature_service_with_normal_alert(self, db_connection, low_threshold, high_threshold, value):
         service = TemperatureService(
-            low_threshold=low_threshold, high_threshold=high_threshold, sensor=value)
+            low_threshold=low_threshold, high_threshold=high_threshold, sensor=value, repository=db_connection)
         result = service.process_temperature()
         expected = {"temperature": value.get_temperature(),
                     "alert": "Normal temperature", "timestamp": datetime.now(timezone.utc)}
@@ -51,3 +57,12 @@ class TestTemperatureService():
         assert result["alert"] == expected["alert"]
         assert result["temperature"].timestamp.strftime(
             "%Y-%m-%d %H:%M") == expected["timestamp"].strftime("%Y-%m-%d %H:%M")
+
+    def test_is_temperature_saved(self, db_connection):
+        service = TemperatureService(
+            low_threshold=20, high_threshold=30, sensor=SensorMock(25), repository=db_connection)
+        result = service.process_temperature()
+        temperature_repository = db_connection
+
+        temperature = temperature_repository.get_last_temperature()
+        assert temperature.value == result["temperature"].value

@@ -12,5 +12,9 @@
 - - [x] definir base
 - - [x] salvar dados do sensor na base
 - [ ] criar notificação de alerta
+- - [x] Quando a médias das ultimas XX leituras for maior que a temperatura maxima
+- - [ ] Quando a média das ultimas XX leituras for menor que a temperatura minima 
+- - [ ] Salvar o alerta 
 - [ ] enviar notificação de alerta frio ou calor
 - [ ] criar servidor
+- [ ] Criar arquivo de configuração

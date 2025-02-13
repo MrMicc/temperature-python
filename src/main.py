@@ -25,12 +25,11 @@ def run_temperature_monitor():
 
     time.sleep(2)
     temperature_sensor = Sensor(board)
-    process = TemperatureService(21, 24, temperature_sensor)
+    process = TemperatureService(21, 24, temperature_sensor, repository)
 
     while True:
 
         result = process.process_temperature()
-        repository.save(result['temperature'])
         print(
             f"{result['temperature'].timestamp.astimezone(time_zone).strftime(time_format)} ## Temperature: {result['temperature'].value}C, Alert: {result['alert']}")
         temp_controller.control_leds(result['alert'])

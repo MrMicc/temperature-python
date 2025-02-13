@@ -48,3 +48,31 @@ class TestTemperatureRepository():
 
         with pytest.raises(NoDataFoundError):
             temperature_repository.get_last_temperature()
+
+    @pytest.mark.parametrize("mock_temps", [[25.5, 45, -10]])
+    def test_get_temperature_list(self, db_connection, mock_temps):
+        temperature_repository = SqliteTemperatureRepository(db_connection)
+
+        for temperature in mock_temps:
+            temperature_repository.save(Temperature(temperature))
+        result = temperature_repository.get_temperature_list()
+
+        assert len(result) == len(mock_temps)
+
+    @pytest.mark.parametrize("mock_temps, expected_size", [
+        ([25.5, 45, -10], 2),
+        ([10, 40, 11, 8], 1)
+    ])
+    def test_get_temperature_list_more_than_expected(self, db_connection, expected_size, mock_temps):
+        temperature_repository = SqliteTemperatureRepository(db_connection)
+
+        for temperature in mock_temps:
+            temperature_repository.save(Temperature(temperature))
+        result = temperature_repository.get_temperature_list(expected_size)
+
+        assert len(result) == expected_size
+
+    def test_get_temperature_list_no_data(self, db_connection):
+        temperature_repository = SqliteTemperatureRepository(db_connection)
+        result = temperature_repository.get_temperature_list()
+        assert len(result) == 0

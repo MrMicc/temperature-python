@@ -1,14 +1,20 @@
-from abc import ABC
+from abc import ABC, abstractmethod
 import sqlite3
 from model.temperature import Temperature
 from errors.custom_errors import NoDataFoundError
 
 
 class TemperatureRepository(ABC):
+    @abstractmethod
     def save(self, temperature: Temperature):
         raise NotImplementedError
 
+    @abstractmethod
     def get_last_temperature(self) -> Temperature:
+        raise NotImplementedError
+
+    @abstractmethod
+    def get_temperature_list(self, list_size=20) -> list[Temperature]:
         raise NotImplementedError
 
 
@@ -45,3 +51,10 @@ class SqliteTemperatureRepository(TemperatureRepository):
             if row is None:
                 raise NoDataFoundError("NO DATA FOUND: "+query)
             return Temperature(row[0], row[1])
+
+    def get_temperature_list(self, list_size=20) -> list[Temperature]:
+        with self.db_connection as connection:
+            query = f"SELECT value, timestamp FROM temperature ORDER BY timestamp DESC LIMIT {list_size}"
+            cursor = connection.execute(query)
+            result = cursor.fetchall()
+            return [Temperature(row[0], row[1]) for row in result]
